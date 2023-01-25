@@ -119,7 +119,7 @@ persistent = true
 
 # Minimum Python version to use for version dependent checks. Will default to the
 # version used to run pylint.
-py-version = "3.8"
+py-version = "3.9"
 
 # Discover python modules and packages in the file system subtree.
 # recursive =
@@ -384,7 +384,6 @@ logging-modules = ["logging"]
 # Valid levels: HIGH, CONTROL_FLOW, INFERENCE, INFERENCE_FAILURE, UNDEFINED.
 confidence = [
     "HIGH",
-    "CONTROL_FLOW",
     "INFERENCE",
     "INFERENCE_FAILURE",
     "UNDEFINED",
