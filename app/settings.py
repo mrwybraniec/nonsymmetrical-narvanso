@@ -10,21 +10,35 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+# Standard Library
 from pathlib import Path
 from typing import List
+
+# Current App
+import environ
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Take environment variables from .env file
+environ.Env.read_env(Path(BASE_DIR).joinpath(".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure--&*9@vr3n$@%7*vkzum*s3^vl*u2i-bgsnp!hmyj44xbj_y^to"
-
+# False if not in os.environ because of casting above
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
+
+# Raises Django's ImproperlyConfigured
+# exception if SECRET_KEY not in os.environ
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = env("SECRET_KEY")
 
 ALLOWED_HOSTS: List[str] = []
 
@@ -75,10 +89,7 @@ WSGI_APPLICATION = "app.wsgi.application"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": env.db_url("SQLITE_URL", default="sqlite:////tmp/my-tmp-sqlite.db")
 }
 
 
@@ -106,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Warsaw"
 
 USE_I18N = True
 
